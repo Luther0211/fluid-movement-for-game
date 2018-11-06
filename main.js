@@ -12,7 +12,7 @@ var images  = {
     planet3:"https://i.imgur.com/usrB8Sj.png",
     meteor1:"https://img9.androidappsapk.co/300/1/4/7/com.Oriol.Casa.png"
 }
-var frames
+var frames = 0
 var startBTN = document.getElementById('start');
  var instructionsBTN = document.getElementById('instructions');
  var Logo = document.getElementById('logo');
@@ -178,6 +178,35 @@ class P2{
 }
 
 
+class Meteors{
+    constructor(x){
+      this.x = x
+      this.y = 740
+      this.width = 100
+      this.height = 100
+      this.image = document.createElement('img')
+      this.image.src = images.meteor1
+      this.image.onload = () => {
+        this.draw()
+      }
+      this.gravity = -5
+    }
+    
+    draw(){
+      this.y-=2
+      if(this.y < canvas.height - 60) this.y += this.gravity
+      ctx.drawImage(this.image,this.x,this.y,this.width,this.height)
+    }
+    // checkCollition(player1){
+    //           return  (this.x < player1.x + player1.width) &&
+    //                   (this.x + this.width > player1.x) &&
+    //                   (this.y < player1.y + player1.height) &&
+    //                   (this.y + this.height > player1.y);
+    //       }
+  }
+
+
+
 var x = 150,
     y = 150,
     velY = 0,
@@ -187,15 +216,15 @@ var x = 150,
     keys = [];
 
 
-// var planet1 = new Planet1()
-// var planet2 = new Planet2()
-// var planet3 = new Planet3()
+
 var player1 = new P1()
 var player2 = new P2()
 var board = new Board()
 var planet1 = new Planet1()
 var planet2 = new Planet2()
 var planet3 = new Planet3()
+
+//var meteors = new Meteors()
     
 
 
@@ -225,11 +254,25 @@ function updatePlayer(player) {
     ctx.fill();
 }
 
-function updateBoard(board,planet1,planet2,planet3) {
+function updateBoard(board,planet1,planet2,planet3,meteors) {
     //board.draw()
     //ctx.beginPath();
     //ctx.fill();
 }
+
+function generateMeteors(){
+    if(frames % 20 === 0){
+     var x = Math.floor(Math.random()*(canvas.width-100))
+     var M1 = new Meteors(x)
+     meteors.push(M1)
+     }
+ }
+ 
+ function drawMeteors(){
+   meteors.forEach(function(Meteors){
+     Meteors.draw()
+   })
+ }
 
 
 function update() {
@@ -241,12 +284,9 @@ function update() {
     planet1.draw()
     planet2.draw()
     planet3.draw()
-    // planet1.draw()
-    // planet2.draw()
-    // planet3.draw()
     //meteoros
-    // generateMeteors()
-    // drawMeteors()
+    generateMeteors()
+    drawMeteors()
     // checkTopLimitP1()
     // checkTopLimitP2()
     // checkMeteorsCollitions()
@@ -306,10 +346,9 @@ function update() {
     
     updatePlayer(player1);
     updatePlayer(player2);
-    updateBoard(board);
+    //updateBoard(board);
     setTimeout(update, 10);
 }
-
 
 
 update();
@@ -320,3 +359,4 @@ document.body.addEventListener("keydown", function (e) {
 document.body.addEventListener("keyup", function (e) {
     keys[e.keyCode] = false;
 });
+
