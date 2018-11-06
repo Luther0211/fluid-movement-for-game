@@ -206,14 +206,14 @@ function updatePlayer(player) {
     player.velX *= friction;
     player.x += player.velX;
 
-    if (player.x >= 1826) {
-        player.x = 1826;
+    if (player.x >= 966) {
+        player.x = 966;
     } else if (player.x <= 0) {
         player.x = 0;
     }
 
-    if (player.y > 840) {
-        player.y = 840;
+    if (player.y > 740) {
+        player.y = 740;
         //temporal top limit
     } else if (player.y <= 4) {
         player.y = 4;
