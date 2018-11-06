@@ -4,6 +4,8 @@ ctx = canvas.getContext("2d");
 //global variables
 var normalMeteorsArr = []
 var bigMeteorsArr = []
+var hugeMeteorsArr = []
+
 var images  = {
     P1: "https://i.imgur.com/lDNOf2n.png",
     P2: "https://i.imgur.com/doHy8wW.png",
@@ -211,14 +213,41 @@ class normalMeteors{
     constructor(x){
       this.x = x
       this.y = 740
-      this.width = 150
-      this.height = 150
+      this.width = 200
+      this.height = 200
       this.image = document.createElement('img')
       this.image.src = images.meteor1
       this.image.onload = () => {
         this.draw()
       }
       this.gravity = -3
+    }
+    
+    draw(){
+      this.y-=2
+      if(this.y < canvas.height - 60) this.y += this.gravity
+      ctx.drawImage(this.image,this.x,this.y,this.width,this.height)
+    }
+    // checkCollition(player1){
+    //           return  (this.x < player1.x + player1.width) &&
+    //                   (this.x + this.width > player1.x) &&
+    //                   (this.y < player1.y + player1.height) &&
+    //                   (this.y + this.height > player1.y);
+    //       }
+  }
+
+  class hugeMeteors{
+    constructor(x){
+      this.x = x
+      this.y = 740
+      this.width = 300
+      this.height = 300
+      this.image = document.createElement('img')
+      this.image.src = images.meteor1
+      this.image.onload = () => {
+        this.draw()
+      }
+      this.gravity = -2
     }
     
     draw(){
@@ -321,6 +350,23 @@ function generateNormalMeteors(){
      })
      generateBigMeteors();
  }
+
+ function generateHugeMeteors(){
+    if(frames % 150 === 0){
+        var x = Math.floor(Math.random()*(canvas.width-100))
+        var M3 = new hugeMeteors(x)
+        hugeMeteorsArr.push(M3)
+    }
+}
+
+function drawHugeMeteors(){
+    hugeMeteorsArr.forEach(function(hugeMeteorsArr){
+        hugeMeteorsArr.draw()
+    })
+    generateHugeMeteors();
+}
+
+
 //---------------------------------------------------------------
 
 function update() {
@@ -336,6 +382,7 @@ function update() {
     // generateMeteors()
     drawBigMeteors()
     drawNormalMeteors()
+    drawHugeMeteors()
     // checkTopLimitP1()
     // checkTopLimitP2()
     // checkMeteorsCollitions()
