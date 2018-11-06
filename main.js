@@ -2,7 +2,8 @@ var canvas = document.getElementById("canvas"),
 ctx = canvas.getContext("2d");
 
 //global variables
-var meteors = []
+var normalMeteorsArr = []
+var bigMeteorsArr = []
 var images  = {
     P1: "https://i.imgur.com/lDNOf2n.png",
     P2: "https://i.imgur.com/doHy8wW.png",
@@ -178,7 +179,7 @@ class P2{
 }
 
 
-class Meteors{
+class normalMeteors{
     constructor(x){
       this.x = x
       this.y = 740
@@ -189,7 +190,7 @@ class Meteors{
       this.image.onload = () => {
         this.draw()
       }
-      this.gravity = -5
+      this.gravity = -3.5
     }
     
     draw(){
@@ -204,6 +205,36 @@ class Meteors{
     //                   (this.y + this.height > player1.y);
     //       }
   }
+
+
+  class bigMeteors{
+    constructor(x){
+      this.x = x
+      this.y = 740
+      this.width = 150
+      this.height = 150
+      this.image = document.createElement('img')
+      this.image.src = images.meteor1
+      this.image.onload = () => {
+        this.draw()
+      }
+      this.gravity = -3
+    }
+    
+    draw(){
+      this.y-=2
+      if(this.y < canvas.height - 60) this.y += this.gravity
+      ctx.drawImage(this.image,this.x,this.y,this.width,this.height)
+    }
+    // checkCollition(player1){
+    //           return  (this.x < player1.x + player1.width) &&
+    //                   (this.x + this.width > player1.x) &&
+    //                   (this.y < player1.y + player1.height) &&
+    //                   (this.y + this.height > player1.y);
+    //       }
+  }
+
+
 
 
 
@@ -254,26 +285,43 @@ function updatePlayer(player) {
     ctx.fill();
 }
 
-function updateBoard(board,planet1,planet2,planet3,meteors) {
+function updateBoard(board,planet1,planet2,planet3) {
     //board.draw()
     //ctx.beginPath();
     //ctx.fill();
 }
 
-function generateMeteors(){
-    if(frames % 20 === 0){
+function generateNormalMeteors(){
+    if(frames % 35 === 0){
      var x = Math.floor(Math.random()*(canvas.width-100))
-     var M1 = new Meteors(x)
-     meteors.push(M1)
+     var M1 = new normalMeteors(x)
+     normalMeteorsArr.push(M1)
      }
  }
  
- function drawMeteors(){
-   meteors.forEach(function(Meteors){
-     Meteors.draw()
+ function drawNormalMeteors() {
+    normalMeteorsArr.forEach(function(normalMeteorsArr){
+     normalMeteorsArr.draw()
    })
+   generateNormalMeteors();
  }
 
+
+ function generateBigMeteors(){
+     if(frames % 60 === 0){
+         var x = Math.floor(Math.random()*(canvas.width-100))
+         var M2 = new bigMeteors(x)
+         bigMeteorsArr.push(M2)
+     }
+ }
+
+ function drawBigMeteors(){
+     bigMeteorsArr.forEach(function(bigMeteorsArr){
+         bigMeteorsArr.draw()
+     })
+     generateBigMeteors();
+ }
+//---------------------------------------------------------------
 
 function update() {
 
@@ -285,8 +333,9 @@ function update() {
     planet2.draw()
     planet3.draw()
     //meteoros
-    generateMeteors()
-    drawMeteors()
+    // generateMeteors()
+    drawBigMeteors()
+    drawNormalMeteors()
     // checkTopLimitP1()
     // checkTopLimitP2()
     // checkMeteorsCollitions()
