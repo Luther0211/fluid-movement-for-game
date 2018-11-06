@@ -381,8 +381,8 @@ function update() {
     //meteoros
     // generateMeteors()
     drawBigMeteors()
-    drawNormalMeteors()
     drawHugeMeteors()
+    drawNormalMeteors()
     // checkTopLimitP1()
     // checkTopLimitP2()
     // checkMeteorsCollitions()
